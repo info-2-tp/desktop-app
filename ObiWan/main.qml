@@ -21,6 +21,7 @@ ApplicationWindow {
         anchors.right: parent.right
         anchors.rightMargin: 16
         Material.accent: Material.Orange
+        onClicked: app.newJob()
 
     }
 

@@ -14,7 +14,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    obiwanapplication.cpp
+    obiwanapplication.cpp \
+    job.cpp \
+    jobpresenter.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,4 +34,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    obiwanapplication.h
+    obiwanapplication.h \
+    job.h \
+    jobpresenter.h
