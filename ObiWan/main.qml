@@ -21,7 +21,16 @@ ApplicationWindow {
         anchors.right: parent.right
         anchors.rightMargin: 16
         Material.accent: Material.Orange
-        onClicked: app.newJob()
+        onClicked: new_job_dialog.open()
+
+    }
+
+    NewJobDialog {
+        id: new_job_dialog
+        anchors.centerIn: parent
+        title: "Nuebo Trabajo"
+        modal: true
+        closePolicy: "CloseOnEscape"
 
     }
 
