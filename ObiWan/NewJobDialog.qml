@@ -1,27 +1,171 @@
 import QtQuick 2.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.3
+import Qt.labs.calendar 1.0
+import QtQml 2.3
 
 Dialog {
     id: newJobDialog
-    title: customizeTitle.checked ? windowTitleField.text : "Hello"
+    width: 600
+    height: 600
+    modal: true
     standardButtons: StandardButton.Save | StandardButton.Cancel
-    onAccepted: lastChosen.text = "Accepted " +
-        (clickedButton === StandardButton.Ok ? "(OK)" : (clickedButton === StandardButton.Retry ? "(Retry)" : "(Ignore)"))
-    onRejected: lastChosen.text = "Rejected " +
-        (clickedButton == StandardButton.Close ? "(Close)" : (clickedButton == StandardButton.Abort ? "(Abort)" : "(Cancel)"))
-    onReset: lastChosen.text = "Reset"
 
-    Label {
-        text: "Nuevo Trabajo!"
+    RowLayout {
+        id: name_row
+        anchors.right: parent.right
+        anchors.rightMargin: 12
+        anchors.left: parent.left
+        anchors.leftMargin: 12
+        Label {
+            id: name_label
+            text: "Nombre: "
+        }
+
+        TextField {
+            id: name
+            placeholderText: "Nombre del trabajo"
+            Layout.fillWidth: true
+        }
+    }
+
+    RowLayout {
+        id: cut_row
+        spacing: 2
+        anchors.top: name_row.bottom
+        anchors.topMargin: 6
+        anchors.right: parent.right
+        anchors.rightMargin: 12
+        anchors.left: parent.left
+        anchors.leftMargin: 12
+        Label {
+            id: cut_quantity_label
+            text: "Cortes: "
+        }
+
+        SpinBox {
+            id: cut_quantity
+            width: 140
+            Layout.maximumWidth: 140
+            value: 1
+            padding: 0
+            font.pointSize: 14
+            editable: true
+            spacing: 0
+            rightPadding: 0
+            bottomPadding: 0
+            topPadding: 0
+            leftPadding: 0
+            to: 100000
+            from: 1
+        }
+
+        Label {
+            id: cut_size_label
+            text: "Altura: "
+        }
+
+        SpinBox {
+            id: cut_size_value
+            width: 140
+            Layout.maximumHeight: 140
+            Layout.maximumWidth: 140
+            font.pointSize: 14
+            editable: true
+            spacing: 0
+            rightPadding: 0
+            bottomPadding: 0
+            topPadding: 0
+            leftPadding: 0
+            to: 10000
+            from: 1
+        }
+
+        ComboBox {
+            id: size_measure
+            model: ["cm", "mm"]
+        }
+    }
+
+    RowLayout {
+        id: behavior_row
+        anchors.top: cut_row.bottom
+        anchors.topMargin: 6
+        anchors.right: parent.right
+        anchors.rightMargin: 12
+        anchors.left: parent.left
+        anchors.leftMargin: 12
+        Label {
+            id: behavior_state_label
+            text: "Estado Inicial: "
+        }
+        ComboBox {
+            id: behavior_state
+            width: 140
+            model: ["Ingresado", "Listo"]
+        }
+
+        Label {
+            id: behavior_priority_label
+            text: "Prioridad: "
+        }
+
+        ComboBox {
+            id: behavior_priority
+            width: 140
+            model: ["Alta", "Media", "Baja"]
+        }
+
+    }
+    RowLayout {
+        id: date_row
+        anchors.top: behavior_row.bottom
+        anchors.topMargin: 6
+        anchors.right: parent.right
+        anchors.rightMargin: 12
+        anchors.left: parent.left
+        anchors.leftMargin: 12
+        ColumnLayout {
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.left: parent.left
+            Label {
+                id: date_label
+                text: "Fecha de Entrega: "
+                horizontalAlignment: Text.AlignHCenter
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            }
+
+            GridLayout {
+                columns: 1
+                DayOfWeekRow {
+                    id: week
+                    delegate: Text {
+                        text: model.shortName
+                        font: week.font
+                        color: "#ffffff"
+                    }
+                    locale: Qt.locale("en_US")
+
+                    Layout.fillWidth: true
+                }
+
+                MonthGrid {
+                    id: grid
+                    delegate: Text {
+                        text: model.day
+                        color: "#ffffff"
+                        opacity: model.month === grid.month ? 1.0 : 0.4
+                    }
+                    locale: Qt.locale("en_US")
+
+                    Layout.fillWidth: true
+                    onClicked: console.log(Date.toLocaleString(date))
+                }
+            }
+        }
     }
 }
-
-
-
-
-
-/*##^## Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
- ##^##*/
