@@ -11,6 +11,10 @@ ApplicationWindow {
     title: qsTr("Obi Wan Kenobi")
     Material.theme: Material.Dark
 
+    ObiCalendar {
+       Material.theme: Material.Dark
+    }
+
     Button {
         id: new_job
         text: qsTr("Nuevo Trabajo")

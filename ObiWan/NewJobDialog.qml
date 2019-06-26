@@ -126,46 +126,6 @@ Dialog {
         anchors.rightMargin: 12
         anchors.left: parent.left
         anchors.leftMargin: 12
-        ColumnLayout {
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.left: parent.left
-            Label {
-                id: date_label
-                text: "Fecha de Entrega: "
-                horizontalAlignment: Text.AlignHCenter
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            }
 
-            GridLayout {
-                columns: 1
-                DayOfWeekRow {
-                    id: week
-                    delegate: Text {
-                        text: model.shortName
-                        font: week.font
-                        color: "#ffffff"
-                    }
-                    locale: Qt.locale("en_US")
-
-                    Layout.fillWidth: true
-                }
-
-                MonthGrid {
-                    id: grid
-                    delegate: Text {
-                        text: model.day
-                        color: "#ffffff"
-                        opacity: model.month === grid.month ? 1.0 : 0.4
-                    }
-                    locale: Qt.locale("en_US")
-
-                    Layout.fillWidth: true
-                    onClicked: console.log(Date.toLocaleString(date))
-                }
-            }
-        }
     }
 }

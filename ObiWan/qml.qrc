@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>NewJobDialog.qml</file>
+        <file>ObiCalendar.qml</file>
     </qresource>
 </RCC>
