@@ -6,8 +6,10 @@ import QtQuick.Controls.Material 2.3
 
 
 Calendar {
+    signal selectDate(date date)
     Material.theme: Material.Dark
     minimumDate: new Date()
+    onClicked: selectDate(date)
     style: CalendarStyle {
         navigationBar: Rectangle {
                 color: "#2e414c"

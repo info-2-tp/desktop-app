@@ -6,14 +6,10 @@ import QtQuick.Controls.Material 2.3
 ApplicationWindow {
     id: mainWindow
     visible: true
-    width: 640
-    height: 480
+    width: 860
+    height: 620
     title: qsTr("Obi Wan Kenobi")
     Material.theme: Material.Dark
-
-    ObiCalendar {
-       Material.theme: Material.Dark
-    }
 
     Button {
         id: new_job

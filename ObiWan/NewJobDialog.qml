@@ -11,6 +11,7 @@ Dialog {
     height: 600
     modal: true
     standardButtons: StandardButton.Save | StandardButton.Cancel
+    onAccepted: console.log("Al aceptar el Dialogo: " + calendar.selectedDate)
 
     RowLayout {
         id: name_row
@@ -118,7 +119,7 @@ Dialog {
         }
 
     }
-    RowLayout {
+    ColumnLayout {
         id: date_row
         anchors.top: behavior_row.bottom
         anchors.topMargin: 6
@@ -126,6 +127,17 @@ Dialog {
         anchors.rightMargin: 12
         anchors.left: parent.left
         anchors.leftMargin: 12
+        Label {
+            id: date_priority_label
+            text: "Fecha de entrega"
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+        }
+
+        ObiCalendar {
+            id: calendar
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            onSelectDate: console.log("Fecha en el popup" + date)
+        }
 
     }
 }
