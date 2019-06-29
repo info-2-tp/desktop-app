@@ -2,16 +2,20 @@ import QtQuick 2.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
-import Qt.labs.calendar 1.0
-import QtQml 2.3
 
 Dialog {
-    id: newJobDialog
+
+    property string job_name
+    property int job_quantity
+
     width: 600
     height: 600
     modal: true
     standardButtons: StandardButton.Save | StandardButton.Cancel
-    onAccepted: console.log("Al aceptar el Dialogo: " + calendar.selectedDate)
+    onAccepted: {
+        this.job_name = name.text
+        this.job_quantity = cut_quantity.value
+    }
 
     RowLayout {
         id: name_row
@@ -136,7 +140,6 @@ Dialog {
         ObiCalendar {
             id: calendar
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            onSelectDate: console.log("Fecha en el popup" + date)
         }
 
     }

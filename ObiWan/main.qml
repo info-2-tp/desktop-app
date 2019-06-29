@@ -31,7 +31,10 @@ ApplicationWindow {
         title: "Nuebo Trabajo"
         modal: true
         closePolicy: "CloseOnEscape"
-
+        onAccepted: {
+            console.log("Nombre:" + new_job_dialog.job_name)
+            console.log("Cortes:" + new_job_dialog.job_quantity)
+        }
     }
 
 }
