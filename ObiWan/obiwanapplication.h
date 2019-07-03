@@ -2,8 +2,11 @@
 #define OBIWANAPPLICATION_H
 
 #include <QGuiApplication>
+#include <QDateTime>
 
 #include "jobpresenter.h"
+
+using namespace std;
 
 class ObiWanApplication: public QGuiApplication
 {
@@ -14,7 +17,7 @@ public:
     void terminate();
 
 public slots:
-    void newJob();
+    void newJob(QString name, int quantity, int size, int measure, int state, int priority, QDateTime date);
 
 private:
     JobPresenter jobPresenter;

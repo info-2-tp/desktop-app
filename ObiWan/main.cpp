@@ -3,6 +3,8 @@
 #include <QQmlContext>
 #include "obiwanapplication.h"
 
+using namespace std;
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

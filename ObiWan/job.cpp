@@ -1,7 +1,7 @@
 #include "job.h"
 #include <ctime>
 
-Job::Job(unsigned long id, std::string name, unsigned int height, unsigned int quantity, time_t date, Measure measure, State state, Priority priority) {
+Job::Job(unsigned long id, string name, unsigned int height, unsigned int quantity, time_t date, Measure measure, State state, Priority priority) {
     this->id = id;
     this->name = name;
     this->height = height;

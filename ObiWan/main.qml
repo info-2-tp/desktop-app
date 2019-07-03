@@ -32,8 +32,7 @@ ApplicationWindow {
         modal: true
         closePolicy: "CloseOnEscape"
         onAccepted: {
-            console.log("Nombre:" + new_job_dialog.job_name)
-            console.log("Cortes:" + new_job_dialog.job_quantity)
+            app.newJob(job_name, job_quantity, job_size, job_measure, job_state, job_priority, job_date)
         }
     }
 

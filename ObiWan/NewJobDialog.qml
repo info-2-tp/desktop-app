@@ -7,6 +7,12 @@ Dialog {
 
     property string job_name
     property int job_quantity
+    property int job_size
+    property int job_measure
+    property int job_state
+    property int job_priority
+    property date job_date
+
 
     width: 600
     height: 600
@@ -15,6 +21,11 @@ Dialog {
     onAccepted: {
         this.job_name = name.text
         this.job_quantity = cut_quantity.value
+        this.job_size = cut_size_value.value
+        this.job_measure = size_measure.currentIndex
+        this.job_state = behavior_state.currentIndex
+        this.job_priority = behavior_priority.currentIndex
+        this.job_date = calendar.selectedDate
     }
 
     RowLayout {
