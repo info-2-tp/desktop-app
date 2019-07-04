@@ -79,7 +79,7 @@ Dialog {
 
         Label {
             id: cut_size_label
-            text: "Altura: "
+            text: "Espesor: "
         }
 
         SpinBox {
@@ -130,7 +130,7 @@ Dialog {
         ComboBox {
             id: behavior_priority
             width: 140
-            model: ["Alta", "Media", "Baja"]
+            model: ["Media", "Alta", "Baja"]
         }
 
     }
