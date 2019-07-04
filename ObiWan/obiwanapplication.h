@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class ObiWanApplication: public QGuiApplication
+class ObiWanApplication: public QGuiApplication, public JobManager
 {
     Q_OBJECT
 public:

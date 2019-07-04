@@ -5,9 +5,18 @@
 
 using namespace std;
 
-class JobPresenter {
+class JobManager {
 public:
-    JobPresenter();
+    virtual void addJob(Job* job);
+    virtual ~JobManager();
+};
+
+class JobPresenter {
+private:
+    JobManager* manager;
+
+public:
+    JobPresenter(JobManager& manager);
 
     Job* createJob(string name, unsigned int quantity, unsigned int size, Measure measure, State state, Priority priority, time_t date);
 };
