@@ -1,7 +1,16 @@
 #include "obiwanapplication.h"
 #include <iostream>
 
-ObiWanApplication::ObiWanApplication(int argc, char* argv[]): QGuiApplication (argc, argv), jobPresenter(*this){}
+ObiWanApplication::ObiWanApplication(int argc, char* argv[]): QGuiApplication (argc, argv), jobPresenter(*this) {}
+
+void ObiWanApplication::initDb(QSqlTableModel* model, QSqlDatabase& db) {
+    this->model = model;
+    this->db = db;
+}
+
+QSqlTableModel& ObiWanApplication::getModel() {
+    return *model;
+}
 
 void JobManager::addJob(Job* job) {
     cout << job->toString() << endl;
