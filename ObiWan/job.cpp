@@ -46,3 +46,31 @@ string Job::toString() {
             ", priority: " + priorityToString() + ", remaining_quantity: " + to_string(remaining_quantity) +
             ", date: " + QDateTime::fromTime_t(date).toString().toStdString() + " }";
 }
+
+unsigned long Job::getId() {
+    return id;
+}
+string Job::getName() {
+    return name;
+}
+unsigned int Job::getHeight() {
+    return height;
+}
+Measure Job::getMeasure() {
+    return measure;
+}
+unsigned int Job::getQuantity() {
+    return quantity;
+}
+State Job::getState() {
+    return state;
+}
+unsigned int Job::getRemaining_quantity() {
+    return remaining_quantity;
+}
+time_t Job::getDate() {
+    return date;
+}
+Priority Job::getPriority() {
+    return priority;
+}

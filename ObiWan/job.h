@@ -28,6 +28,16 @@ private:
 
 public:
     string toString();
+
+    unsigned long getId();
+    string getName();
+    unsigned int getHeight();
+    Measure getMeasure();
+    unsigned int getQuantity();
+    State getState();
+    unsigned int getRemaining_quantity();
+    time_t getDate();
+    Priority getPriority();
 };
 
 #endif // JOB_H

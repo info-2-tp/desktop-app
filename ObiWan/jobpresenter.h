@@ -2,6 +2,7 @@
 #define JOBPRESENTER_H
 
 #include "job.h"
+#include "jobrepository.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ public:
 class JobPresenter {
 private:
     JobManager* manager;
+    JobRepository repo;
 
 public:
     JobPresenter(JobManager& manager);
