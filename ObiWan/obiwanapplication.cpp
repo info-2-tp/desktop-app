@@ -13,7 +13,7 @@ QSqlTableModel& ObiWanApplication::getModel() {
 }
 
 void JobManager::addJob(Job* job) {
-    cout << job->toString() << endl;
+    cout << *job << endl;
 }
 
 JobManager::~JobManager() {}

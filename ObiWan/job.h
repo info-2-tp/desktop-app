@@ -2,6 +2,7 @@
 #define JOB_H
 
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ private:
     string measureToString();
 
 public:
+    friend ostream & operator << (ostream& out, Job& job);
     string toString();
 
     unsigned long getId();

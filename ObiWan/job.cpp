@@ -47,6 +47,11 @@ string Job::toString() {
             ", date: " + QDateTime::fromTime_t(date).toString().toStdString() + " }";
 }
 
+ostream& operator << (ostream& out, Job& job) {
+    out << job.toString();
+    return out;
+}
+
 unsigned long Job::getId() {
     return id;
 }
