@@ -14,6 +14,7 @@ QSqlTableModel& ObiWanApplication::getModel() {
 
 void JobManager::addJob(Job* job) {
     cout << *job << endl;
+    static_cast<ObiWanApplication*>(this)->getModel().select();
 }
 
 JobManager::~JobManager() {}
