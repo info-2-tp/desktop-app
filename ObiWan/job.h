@@ -12,6 +12,7 @@ enum Priority { MEDIUM, HIGH, LOW };
 class Job {
 public:
     Job(unsigned long id, string name, unsigned int height, unsigned int quantity, time_t date, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
+        Job(string name, unsigned int height, unsigned int quantity, time_t date, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
 private:
     unsigned long id;
     string name;

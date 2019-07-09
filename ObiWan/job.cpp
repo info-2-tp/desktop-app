@@ -2,7 +2,7 @@
 #include <ctime>
 #include <QDateTime>
 
-#define PR
+#define DEFAULT_ID 0
 
 Job::Job(unsigned long id, string name, unsigned int height, unsigned int quantity, time_t date, Measure measure, State state, Priority priority) {
     this->id = id;
@@ -13,7 +13,19 @@ Job::Job(unsigned long id, string name, unsigned int height, unsigned int quanti
     this->state = state;
     this->priority = priority;
     this->remaining_quantity = quantity;
-    this->date = date; //time(nullptr);
+    this->date = date;
+}
+
+Job::Job(string name, unsigned int height, unsigned int quantity, time_t date, Measure measure, State state, Priority priority) {
+    this->id = DEFAULT_ID;
+    this->name = name;
+    this->height = height;
+    this->measure = measure;
+    this->quantity = quantity;
+    this->state = state;
+    this->priority = priority;
+    this->remaining_quantity = quantity;
+    this->date = date;
 }
 
 string Job::measureToString() {
