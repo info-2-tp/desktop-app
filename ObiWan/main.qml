@@ -6,14 +6,63 @@ import QtQuick.Controls.Material 2.3
 ApplicationWindow {
     id: mainWindow
     visible: true
-    width: 900
+    width: 980
     height: 620
     title: qsTr("Obi Wan Kenobi")
     Material.theme: Material.Dark
 
     TableView {
-        property var columnWidths: [0.04, 0.22, 0.07, 0.08, 0.09, 0.07, 0.1, 0.22, 0.12]
+        property var columnWidths: [0.04, 0.26, 0.06, 0.06, 0.08, 0.11, 0.1, 0.18, 0.12]
         property var columnNames: ["Id", "Descripción", "Ancho", "Medida", "Cantidad", "Estado", "Pendientes", "Fecha de entrega", "Prioridad"]
+        function parseMeasure(value) {
+            return value ? "mm" : "cm"
+        }
+
+        function parseState(value) {
+            switch(value) {
+            case 0: return "En Progreso"
+            case 1: return "Listo"
+            case 2: return "En Progreso"
+            case 3: return "Completado"
+            case 4: return "Cancelado"
+            }
+            return value
+        }
+
+        function parsePriority(value) {
+            switch(value) {
+            case 0: return "Normal"
+            case 1: return "Alta"
+            case 2: return "Baja"
+            }
+            return value
+        }
+
+        function parseDate(value) {
+            return new Date(value).toLocaleString(Qt.locale("es_AR"),"dd/MM/yyyy hh:mm")
+            //return Date.fromLocaleString(locale, value, "dd/MM/yyyy hh:mm")
+        }
+
+        function parseRegister(column, value) {
+            if (column === 3) {
+                return parseMeasure(value)
+            }
+
+            if (column === 5) {
+                return parseState(value)
+            }
+
+            if (column === 7) {
+                return parseDate(value)
+            }
+
+            if (column === 8) {
+                return parsePriority(value)
+            }
+
+            return value
+        }
+
         anchors.rightMargin: 16
         anchors.leftMargin: 16
         anchors.bottomMargin: 16
@@ -66,16 +115,23 @@ ApplicationWindow {
         }
 
         delegate: Rectangle {
+            id: reg
             color: row % 2 === 0 ? '#2b3c46' : '#22313a'
             Text {
-                text: display
+                text: jobs.parseRegister(column, display)
+
                 anchors.fill: parent
                 anchors.margins: 10
-
                 color: '#9bbcd1'
                 font.pixelSize: 14
                 font.family: "Verdana"
                 verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: {
+                    if (column === 0 || column === 2 || column === 4 || column === 6)
+                        return Text.AlignRight
+                    else
+                        return Text.AlignLeft
+                }
             }
         }
         ScrollIndicator.vertical: ScrollIndicator { }
