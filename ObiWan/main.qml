@@ -6,29 +6,36 @@ import QtQuick.Controls.Material 2.3
 ApplicationWindow {
     id: mainWindow
     visible: true
-    width: 860
+    width: 900
     height: 620
     title: qsTr("Obi Wan Kenobi")
     Material.theme: Material.Dark
 
     TableView {
+        property var columnWidths: [0.04, 0.22, 0.07, 0.08, 0.09, 0.07, 0.1, 0.22, 0.12]
+        property var columnNames: ["Id", "Descripción", "Ancho", "Medida", "Cantidad", "Estado", "Pendientes", "Fecha de entrega", "Prioridad"]
+        anchors.rightMargin: 16
+        anchors.leftMargin: 16
+        anchors.bottomMargin: 16
+        anchors.topMargin: 16
+        topMargin: columnsHeader.implicitHeight
+        Timer {
+            id: resizeDelay
+            interval: 10
+            repeat: false
+            onTriggered: jobs.forceLayout()
+        }
         id: jobs
         anchors.fill: parent
         columnSpacing: 1
         rowSpacing: 1
-        clip: true
         model: jobs_model
-        delegate: Item {
-            Text {
-                text: display
-                anchors.fill: parent
-                anchors.margins: 10
-                color: '#aaaaaa'
-                font.pixelSize: 15
-                verticalAlignment: Text.AlignVCenter
-            }
+        clip: true
+        onWidthChanged: resizeDelay.start()
+        columnWidthProvider: function (column) {
+            return columnWidths[column]*jobs.width
         }
-/*
+
         Rectangle { // mask the headers
             z: 3
             color: "#222222"
@@ -37,43 +44,40 @@ ApplicationWindow {
             width: jobs.leftMargin
             height: jobs.topMargin
         }
+
         Row {
             id: columnsHeader
             y: jobs.contentY
             z: 2
             Repeater {
-                model: jobs.rows
+                model: jobs.columns
                 Label {
-                    height: 35
-                    text: jobs_model.
-                    color: '#aaaaaa'
-                    font.pixelSize: 15
+                    width: jobs.columnWidthProvider(modelData)
+                    text: jobs.columnNames[modelData]
+                    font.bold: true
+                    font.family: "Verdana"
+                    horizontalAlignment: Text.AlignHCenter
+                    color: '#dcf3ff'
+                    font.pixelSize: 13
                     padding: 10
                     verticalAlignment: Text.AlignVCenter
-
-                    background: Rectangle { color: "#333333" }
                 }
             }
         }
-        Column {
-            id: rowsHeader
-            x: jobs.contentX
-            z: 2
-            Repeater {
-                model: ["id", "Nombre", "Espesor"]
-                Label {
-                    width: 180
-                    text: modelData
-                    color: '#aaaaaa'
-                    font.pixelSize: 15
-                    padding: 10
-                    verticalAlignment: Text.AlignVCenter
 
-                    background: Rectangle { color: "#333333" }
-                }
+        delegate: Rectangle {
+            color: row % 2 === 0 ? '#2b3c46' : '#22313a'
+            Text {
+                text: display
+                anchors.fill: parent
+                anchors.margins: 10
+
+                color: '#9bbcd1'
+                font.pixelSize: 14
+                font.family: "Verdana"
+                verticalAlignment: Text.AlignVCenter
             }
-        }*/
-        ScrollIndicator.horizontal: ScrollIndicator { }
+        }
         ScrollIndicator.vertical: ScrollIndicator { }
     }
 

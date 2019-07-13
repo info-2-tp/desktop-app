@@ -8,7 +8,7 @@ using namespace std;
 
 class JobManager {
 public:
-    virtual void addJob(Job* job);
+    virtual void refreshJobs();
     virtual ~JobManager();
 };
 
