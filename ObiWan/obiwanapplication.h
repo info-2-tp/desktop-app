@@ -24,6 +24,7 @@ public slots:
     QSqlTableModel& getModel();
 
 private:
+    QString settingsFileName;
     QSqlDatabase db;
     QSqlTableModel* model;
     JobPresenter jobPresenter;
