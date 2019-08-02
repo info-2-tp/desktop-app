@@ -41,3 +41,6 @@ HEADERS += \
     job.h \
     jobpresenter.h \
     sqliteconnection.h
+
+DISTFILES += \
+    config.ini

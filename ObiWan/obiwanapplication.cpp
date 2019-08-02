@@ -1,7 +1,13 @@
 #include "obiwanapplication.h"
 #include <iostream>
 
-ObiWanApplication::ObiWanApplication(int argc, char* argv[]): QGuiApplication (argc, argv), jobPresenter(*this) {}
+ObiWanApplication::ObiWanApplication(int argc, char* argv[]): QGuiApplication (argc, argv), jobPresenter(*this) {
+    settingsFileName = ":/config.ini";
+    cout << settingsFileName.toStdString() << endl;
+    QSettings settings(settingsFileName, QSettings::IniFormat);
+    QString sText = settings.value("usb/VendorID", "default").toString();
+    cout << sText.toStdString() << endl;
+}
 
 void ObiWanApplication::initDb(QSqlTableModel* model, QSqlDatabase& db) {
     this->model = model;
