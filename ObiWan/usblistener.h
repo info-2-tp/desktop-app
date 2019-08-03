@@ -7,13 +7,16 @@ class UsbListener: public QThread
 {
     Q_OBJECT
 signals:
-    void newRoutineSource( );
+    void newMessage();
 private:
+    void* buffer;
+    uint16_t size;
+
     void run();
 private slots:
-    void newMessage();
+    void listen();
 public:
-    UsbListener();
+    UsbListener(void *buffer, uint16_t size);
     ~UsbListener();
 };
 
