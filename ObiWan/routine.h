@@ -3,10 +3,12 @@
 
 #include <stdint.h>
 
+/*
 typedef struct {
     uint8_t type;
     uint16_t size;
 } message_header_t;
+*/
 
 typedef struct {
     uint8_t block_count;

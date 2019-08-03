@@ -1,6 +1,12 @@
 #include "jobsdeliverymanager.h"
 
-JobsDeliveryManager::JobsDeliveryManager()
-{
+#include <QTimer>
 
+JobsDeliveryManager::JobsDeliveryManager(JobPresenter* jobPresenter)
+{
+    this->jobPresenter = jobPresenter;
+    routine_source_t source;
+    source.block_count = 3;
+    source.block_height = 500;
+    jobPresenter->getRoutine(source);
 }

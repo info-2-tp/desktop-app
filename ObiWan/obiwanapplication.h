@@ -8,6 +8,7 @@
 
 #include "jobpresenter.h"
 #include "job.h"
+#include "jobsdeliverymanager.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ private:
     QSqlDatabase db;
     QSqlTableModel* model;
     JobPresenter jobPresenter;
+    JobsDeliveryManager* deliveryManager;
 
 };
 
