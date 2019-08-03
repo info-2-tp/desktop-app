@@ -2,6 +2,7 @@
 #include <iostream>
 
 ObiWanApplication::ObiWanApplication(int argc, char* argv[]): QGuiApplication (argc, argv), jobPresenter(*this) {
+    this->deliveryManager = new JobsDeliveryManager(&jobPresenter);
     settingsFileName = ":/config.ini";
     cout << settingsFileName.toStdString() << endl;
     QSettings settings(settingsFileName, QSettings::IniFormat);
@@ -25,7 +26,8 @@ void JobManager::refreshJobs() {
 JobManager::~JobManager() {}
 
 void ObiWanApplication::terminate() {
-
+    delete deliveryManager;
+    delete model;
 }
 
 void ObiWanApplication::newJob(QString name, unsigned int quantity, unsigned int size, int measure, int state, int priority, QDateTime date) {
