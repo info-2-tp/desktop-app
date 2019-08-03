@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     jobrepository.cpp \
+    jobsdeliverymanager.cpp \
         main.cpp \
     obiwanapplication.cpp \
     job.cpp \
@@ -37,9 +38,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     jobrepository.h \
+    jobsdeliverymanager.h \
     obiwanapplication.h \
     job.h \
     jobpresenter.h \
+    routine.h \
     sqliteconnection.h
 
 DISTFILES += \
