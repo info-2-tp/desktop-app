@@ -3,12 +3,7 @@
 
 #include <stdint.h>
 
-/*
-typedef struct {
-    uint8_t type;
-    uint16_t size;
-} message_header_t;
-*/
+#define ROUTINE_SOURCE_MESSAGE 1
 
 typedef struct {
     uint8_t block_count;

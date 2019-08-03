@@ -3,6 +3,12 @@
 
 #include "jobpresenter.h"
 #include "usblistener.h"
+#include "routine.h"
+
+typedef struct {
+    uint8_t type;
+    uint16_t size;
+} message_header_t;
 
 using namespace std;
 
@@ -14,10 +20,18 @@ public:
     ~JobsDeliveryManager();
 
 public slots:
-        void newMessage();
+        void newRoutineRequestHeader();
+        void newRoutineRequest();
 private:
+    message_header_t header;
+    routine_source_t routine_source;
+
     JobPresenter* jobPresenter;
-    UsbListener* routineListener;
+    UsbListener* usbListener;
+
+    UsbListener* createNewRoutineListener();
+    UsbListener* createRoutineSourceListener();
+
 };
 
 #endif // JOBSDELIVERYMANAGER_H
