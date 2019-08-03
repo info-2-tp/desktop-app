@@ -19,7 +19,8 @@ SOURCES += \
         main.cpp \
     obiwanapplication.cpp \
     job.cpp \
-    jobpresenter.cpp
+    jobpresenter.cpp \
+    routinelistener.cpp
 
 RESOURCES += qml.qrc
 
@@ -43,6 +44,7 @@ HEADERS += \
     job.h \
     jobpresenter.h \
     routine.h \
+    routinelistener.h \
     sqliteconnection.h
 
 DISTFILES += \
