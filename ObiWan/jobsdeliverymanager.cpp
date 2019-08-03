@@ -5,7 +5,7 @@
 JobsDeliveryManager::JobsDeliveryManager(JobPresenter* jobPresenter)
 {
     this->jobPresenter = jobPresenter;
-    this->routineListener = new RoutineListener();
+    this->routineListener = new UsbListener();
     QObject::connect((this->routineListener), SIGNAL(newRoutineSource()), this, SLOT(newMessage()), Qt::QueuedConnection);
     this->routineListener->start();
 }

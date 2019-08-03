@@ -1,10 +1,10 @@
-#include "routinelistener.h"
+#include "usblistener.h"
 
 #include <QTimer>
 
-RoutineListener::RoutineListener(){}
+UsbListener::UsbListener(){}
 
-void RoutineListener::run() {
+void UsbListener::run() {
     QTimer timer;
     connect(&timer, SIGNAL(timeout()), this, SLOT(newMessage()), Qt::DirectConnection);
     timer.setInterval(5000);
@@ -13,11 +13,11 @@ void RoutineListener::run() {
     timer.stop();
 }
 
-void RoutineListener::newMessage() {
+void UsbListener::newMessage() {
     newRoutineSource();
 }
 
-RoutineListener::~RoutineListener() {
+UsbListener::~UsbListener() {
     this->quit();
     this->wait();
 }
