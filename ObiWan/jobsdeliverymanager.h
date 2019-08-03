@@ -2,7 +2,7 @@
 #define JOBSDELIVERYMANAGER_H
 
 #include "jobpresenter.h"
-#include "routinelistener.h"
+#include "usblistener.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ public slots:
         void newMessage();
 private:
     JobPresenter* jobPresenter;
-    RoutineListener* routineListener;
+    UsbListener* routineListener;
 };
 
 #endif // JOBSDELIVERYMANAGER_H

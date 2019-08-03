@@ -20,7 +20,7 @@ SOURCES += \
     obiwanapplication.cpp \
     job.cpp \
     jobpresenter.cpp \
-    routinelistener.cpp
+    usblistener.cpp
 
 RESOURCES += qml.qrc
 
@@ -44,8 +44,8 @@ HEADERS += \
     job.h \
     jobpresenter.h \
     routine.h \
-    routinelistener.h \
-    sqliteconnection.h
+    sqliteconnection.h \
+    usblistener.h
 
 DISTFILES += \
     config.ini
