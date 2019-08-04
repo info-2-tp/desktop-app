@@ -4,43 +4,30 @@
 
 JobsDeliveryManager::JobsDeliveryManager(JobPresenter* jobPresenter)
 {
-    cout << "Sizeof de message_header_t: " << sizeof (message_header_t) << endl;
-    cout << "Sizeof de routine_source_t: " << sizeof (routine_source_t) << endl;
     this->jobPresenter = jobPresenter;
-    this->usbListener = createNewRoutineListener();
+    this->usbListener = new UsbHandler();
+    this->waitNewRoutineMessage();
 }
 
-UsbListener* JobsDeliveryManager::createNewRoutineListener() {
-    UsbListener* listener = new UsbListener(&header, sizeof (message_header_t));
-    QObject::connect(listener, SIGNAL(newMessage()), this, SLOT(newRoutineRequestHeader()), Qt::QueuedConnection);
-    listener->start();
-    return listener;
+void JobsDeliveryManager::waitNewRoutineMessage() {
+    QObject::connect(this->usbListener, SIGNAL(newMessage()), this, SLOT(newRoutineRequestHeader()), Qt::QueuedConnection);
+    this->usbListener->listen(&header, sizeof (message_header_t));
 }
 
-UsbListener* JobsDeliveryManager::createRoutineSourceListener() {
-    UsbListener* listener = new UsbListener(&routine_source, sizeof (routine_source_t));
-    QObject::connect(listener, SIGNAL(newMessage()), this, SLOT(newRoutineRequest()), Qt::QueuedConnection);
-    listener->start();
-    return listener;
+void JobsDeliveryManager::waitRoutineSource() {
+    QObject::connect(this->usbListener, SIGNAL(newMessage()), this, SLOT(newRoutineRequest()), Qt::QueuedConnection);
+    this->usbListener->listen(&routine_source, sizeof (routine_source_t));
 }
 
 void JobsDeliveryManager::newRoutineRequestHeader() {
     cout << "Header -> tipo: " << +header.type << " tamaño: " << header.size << endl;
-    /*
-    routine_source_t source;
-    source.block_count = 3;
-    source.block_height = 500;
-    jobPresenter->getRoutine(source);
-    */
-    delete usbListener;
-    usbListener = createRoutineSourceListener();
+    this->waitRoutineSource();
 }
 
 void JobsDeliveryManager::newRoutineRequest() {
     cout << "Bloques: " << +routine_source.block_count << " tamaño: " << routine_source.block_height << endl;
     this->jobPresenter->getRoutine(routine_source);
-    delete usbListener;
-    usbListener = createNewRoutineListener();
+    this->waitNewRoutineMessage();
 }
 
 JobsDeliveryManager::~JobsDeliveryManager() {

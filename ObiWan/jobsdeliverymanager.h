@@ -2,7 +2,7 @@
 #define JOBSDELIVERYMANAGER_H
 
 #include "jobpresenter.h"
-#include "usblistener.h"
+#include "usbhandler.h"
 #include "routine.h"
 
 typedef struct {
@@ -27,10 +27,10 @@ private:
     routine_source_t routine_source;
 
     JobPresenter* jobPresenter;
-    UsbListener* usbListener;
+    UsbHandler* usbListener;
 
-    UsbListener* createNewRoutineListener();
-    UsbListener* createRoutineSourceListener();
+    void waitNewRoutineMessage();
+    void waitRoutineSource();
 
 };
 
