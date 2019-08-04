@@ -3,7 +3,7 @@
 
 #include <QThread>
 
-class UsbListener: public QThread
+class UsbHandler: public QThread
 {
     Q_OBJECT
 signals:
@@ -14,10 +14,13 @@ private:
 
     void run();
 private slots:
-    void listen();
+    void listenTimer();
 public:
-    UsbListener(void *buffer, uint16_t size);
-    ~UsbListener();
+    UsbHandler();
+    ~UsbHandler();
+
+    void listen(void* buffer, uint16_t size);
+
 };
 
 #endif // ROUTINELISTENER_H
