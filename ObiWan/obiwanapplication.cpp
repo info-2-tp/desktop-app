@@ -3,11 +3,6 @@
 
 ObiWanApplication::ObiWanApplication(int argc, char* argv[]): QGuiApplication (argc, argv), jobPresenter(*this) {
     this->deliveryManager = new JobsDeliveryManager(&jobPresenter);
-    settingsFileName = ":/config.ini";
-    cout << settingsFileName.toStdString() << endl;
-    QSettings settings(settingsFileName, QSettings::IniFormat);
-    QString sText = settings.value("usb/VendorID", "default").toString();
-    cout << sText.toStdString() << endl;
 }
 
 void ObiWanApplication::initDb(QSqlTableModel* model, QSqlDatabase& db) {
