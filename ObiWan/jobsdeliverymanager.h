@@ -6,7 +6,7 @@
 #include "routine.h"
 
 typedef struct {
-    uint8_t type;
+    uint16_t type;
     uint16_t size;
 } message_header_t;
 

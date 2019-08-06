@@ -53,7 +53,7 @@ void UsbHandler::initializeUsb() {
     cout<<"ProductID: "<<device_descriptor.idProduct<< "  ";
     libusb_config_descriptor *config;
     libusb_get_config_descriptor(device, 0, &config);
-    cout<<"Interfaces: "<<(int)config->bNumInterfaces<< endl;
+    cout<<"Interfaces: "<<static_cast<int>(config->bNumInterfaces)<< endl;
 
     device_hundler = libusb_open_device_with_vid_pid(context, vendor_id, product_id);
 
@@ -115,13 +115,13 @@ void UsbHandler::prepareDevice() {
         for(int j=0; j<interface->num_altsetting; j++) {
             interface_descriptor = &interface->altsetting[j];
             cout << "\tSetting " << j << endl;
-            cout<<"\t\tInterface Number: "<<(int)interface_descriptor->bInterfaceNumber<<endl;
-            cout<<"\t\tNumber of endpoints: "<<(int)interface_descriptor->bNumEndpoints<<endl;
-            for(int k=0; k<(int)interface_descriptor->bNumEndpoints; k++) {
+            cout<<"\t\tInterface Number: "<<static_cast<int>(interface_descriptor->bInterfaceNumber)<<endl;
+            cout<<"\t\tNumber of endpoints: "<<static_cast<int>(interface_descriptor->bNumEndpoints)<<endl;
+            for(int k=0; k<static_cast<int>(interface_descriptor->bNumEndpoints); k++) {
                 endpoint_descriptor = &interface_descriptor->endpoint[k];
                 cout << "\t\t\tEndpoint " << k << " -> ";
-                cout<<"Descriptor Type: "<<(int)endpoint_descriptor->bDescriptorType<<" | ";
-                cout<<"EP Address: "<<(int)endpoint_descriptor->bEndpointAddress<<endl;
+                cout<<"Descriptor Type: "<<static_cast<int>(endpoint_descriptor->bDescriptorType)<<" | ";
+                cout<<"EP Address: "<<static_cast<int>(endpoint_descriptor->bEndpointAddress)<<endl;
             }
         }
     }
@@ -131,17 +131,14 @@ void UsbHandler::prepareDevice() {
 
 void UsbHandler::run() {
     prepareDevice();
-    cout<<"USB Ready to receive data!!"<<endl;
-    int bytes;
-    while (1) {
-        unsigned char data = '\0';
-        int result = libusb_bulk_transfer(device_hundler, DEFAULT_IN_ENDPOINT, &data, 1, &bytes, 0);
-        if (!result && bytes) {
-            cout << "Data <- " << data << endl;
-            sleep(2);
-        } else {
-            cout << "Nada -> " << "success: " << result << " data: " << +data << endl;
-        }
+    int bytes = 0;
+    while (bytes != size) {
+        int hasError = libusb_interrupt_transfer(device_hundler, DEFAULT_IN_ENDPOINT, static_cast<uint8_t*>(buffer), size, &bytes, 0);
+        cout << "Bytes: " << bytes << endl << "|" << +static_cast<uint8_t*>(buffer)[0] <<
+                "|" << +static_cast<uint8_t*>(buffer)[1] <<
+                "|" << +static_cast<uint8_t*>(buffer)[2] <<
+                "|" << +static_cast<uint8_t*>(buffer)[3] << "|" << endl;
+        if (!hasError && bytes == size) newMessage();
     }
 
 }

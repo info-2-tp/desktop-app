@@ -27,8 +27,6 @@ private:
     void initializeUsb();
     libusb_device* searchDevice(libusb_device** devices, ssize_t size);
     void prepareDevice();
-private slots:
-    //void listenTimer();
 public:
     UsbHandler();
     ~UsbHandler();
