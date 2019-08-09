@@ -29,6 +29,8 @@ private:
     JobPresenter* jobPresenter;
     UsbHandler* usbListener;
 
+    QMetaObject::Connection currentConnection;
+
     void waitNewRoutineMessage();
     void waitRoutineSource();
 
