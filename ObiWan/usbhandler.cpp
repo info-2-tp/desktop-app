@@ -10,6 +10,8 @@ using namespace std;
 #define KERNEL_DRIVER_IS_ACTIVE 1
 #define SUCCESS 0
 
+#define TIMEPUT 5000
+
 UsbHandler::UsbHandler(){
     configure();
     initializeUsb();
@@ -107,21 +109,12 @@ void UsbHandler::prepareDevice() {
     const libusb_interface *interface;
     const libusb_interface_descriptor *interface_descriptor;
     const libusb_endpoint_descriptor *endpoint_descriptor;
-    cout << "Interfaces: " << config->bNumInterfaces << endl;
     for (int i = 0; i < config->bNumInterfaces; i++) {
         interface = &config->interface[i];
-        cout << "Interface " << i << endl;
-        cout<<"\tNumber of alternate settings: "<<interface->num_altsetting<<endl;
         for(int j=0; j<interface->num_altsetting; j++) {
             interface_descriptor = &interface->altsetting[j];
-            cout << "\tSetting " << j << endl;
-            cout<<"\t\tInterface Number: "<<static_cast<int>(interface_descriptor->bInterfaceNumber)<<endl;
-            cout<<"\t\tNumber of endpoints: "<<static_cast<int>(interface_descriptor->bNumEndpoints)<<endl;
             for(int k=0; k<static_cast<int>(interface_descriptor->bNumEndpoints); k++) {
                 endpoint_descriptor = &interface_descriptor->endpoint[k];
-                cout << "\t\t\tEndpoint " << k << " -> ";
-                cout<<"Descriptor Type: "<<static_cast<int>(endpoint_descriptor->bDescriptorType)<<" | ";
-                cout<<"EP Address: "<<static_cast<int>(endpoint_descriptor->bEndpointAddress)<<endl;
             }
         }
     }
@@ -132,13 +125,15 @@ void UsbHandler::prepareDevice() {
 void UsbHandler::run() {
     prepareDevice();
     int bytes = 0;
-    while (bytes != size) {
-        int hasError = libusb_interrupt_transfer(device_hundler, DEFAULT_IN_ENDPOINT, static_cast<uint8_t*>(buffer), size, &bytes, 0);
+    int readedBytes = 0;
+    while (readedBytes < size) {
+        int hasError = libusb_interrupt_transfer(device_hundler, DEFAULT_IN_ENDPOINT, static_cast<uint8_t*>(buffer) + readedBytes, size, &bytes, TIMEPUT);
+        readedBytes+= bytes;
         cout << "Bytes: " << bytes << endl << "|" << +static_cast<uint8_t*>(buffer)[0] <<
                 "|" << +static_cast<uint8_t*>(buffer)[1] <<
                 "|" << +static_cast<uint8_t*>(buffer)[2] <<
                 "|" << +static_cast<uint8_t*>(buffer)[3] << "|" << endl;
-        if (!hasError && bytes == size) newMessage();
+        if (!hasError && readedBytes >= size) newMessage();
     }
 
 }
