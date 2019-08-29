@@ -72,7 +72,7 @@ ApplicationWindow {
             id: resizeDelay
             interval: 10
             repeat: false
-            onTriggered: jobs.forceLayout()
+            onTriggered: if (jobs_model.rowCount() > 0)jobs.forceLayout()
         }
         id: jobs
         anchors.fill: parent

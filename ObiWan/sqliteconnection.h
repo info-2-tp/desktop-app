@@ -30,8 +30,6 @@ static bool createConnection(QSqlDatabase* db)
                "date integer,"
                "priority integer)");
 
-    query.exec("insert into job values(1, 'saraza', 30, 0, 100, 0, 100, 10000, 0)");
-
 
     return true;
 }
