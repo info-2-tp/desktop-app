@@ -22,9 +22,7 @@ void JobsDeliveryManager::waitRoutineSource() {
 void JobsDeliveryManager::newRoutineRequestHeader() {
     QObject::disconnect(this->currentConnection);
     cout << "Header -> tipo: " << +header.type << " tamaño: " << header.size << endl;
-    //this->waitRoutineSource();
-    //TODO solo para probar el header
-    this->waitNewRoutineMessage();
+    this->waitRoutineSource();
 }
 
 void JobsDeliveryManager::newRoutineRequest() {

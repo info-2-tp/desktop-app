@@ -6,7 +6,7 @@
 #define ROUTINE_SOURCE_MESSAGE 1
 
 typedef struct {
-    uint8_t block_count;
+    uint16_t block_count;
     uint16_t block_height;
 } routine_source_t;
 

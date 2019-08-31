@@ -3,7 +3,7 @@
 
 using namespace std;
 #include <QThread>
-#include <libusb.h>
+#include <QtSerialPort>
 
 class UsbHandler: public QThread
 {
@@ -13,26 +13,18 @@ signals:
 private:
     void* buffer;
     uint16_t size;
+    bool loading;
 
-    QString settingsFileName;
-    uint16_t vendor_id;
-    uint16_t product_id;
-
-    libusb_device* device;
-    libusb_context *context = nullptr;
-    libusb_device_handle *device_hundler;
+    QSerialPort serialPort;
 
     void run();
     void configure();
-    void initializeUsb();
-    libusb_device* searchDevice(libusb_device** devices, ssize_t size);
-    void prepareDevice();
+    void read();
 public:
     UsbHandler();
     ~UsbHandler();
 
     void listen(void* buffer, uint16_t size);
-
 };
 
 #endif // ROUTINELISTENER_H
