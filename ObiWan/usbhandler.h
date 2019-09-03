@@ -25,6 +25,7 @@ public:
     ~UsbHandler();
 
     void listen(void* buffer, uint16_t size);
+    void send(void* buffer, uint16_t size);
 };
 
 #endif // ROUTINELISTENER_H

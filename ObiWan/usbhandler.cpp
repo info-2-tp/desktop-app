@@ -18,7 +18,7 @@ void UsbHandler::configure() {
     QSettings settings(CONFIG_FILE, QSettings::IniFormat);
     serialPort.setPortName(settings.value(SERIAL_PORT_NAME).toString());
     serialPort.setBaudRate(settings.value(BAUD_RATE_NAME).toInt());
-    if (!serialPort.open(QIODevice::ReadOnly)) {
+    if (!serialPort.open(QIODevice::ReadWrite)) {
             cout << QObject::tr("Failed to open, error: %1").arg(serialPort.error()).toStdString() << endl;
     }
 }
@@ -27,6 +27,10 @@ void UsbHandler::listen(void *buffer, uint16_t size) {
     this->buffer = buffer;
     this->size = size;
     this->loading = true;
+}
+
+void UsbHandler::send(void *buffer, uint16_t size) {
+    serialPort.write(static_cast<char*>(buffer), size);
 }
 
 void UsbHandler::run() {

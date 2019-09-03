@@ -29,6 +29,10 @@ void JobsDeliveryManager::newRoutineRequest() {
     QObject::disconnect(this->currentConnection);
     cout << "Bloques: " << +routine_source.block_count << " tamaño: " << routine_source.block_height << endl;
     this->jobPresenter->getRoutine(routine_source);
+    message_header_t header;
+    header.type = 2;
+    header.size = 4;
+    this->usbListener->send(&header, sizeof (header));
     this->waitNewRoutineMessage();
 }
 
