@@ -1,4 +1,4 @@
-QT += quick gui sql
+QT += quick gui sql serialport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
 
@@ -15,10 +15,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     jobrepository.cpp \
+    jobsdeliverymanager.cpp \
         main.cpp \
     obiwanapplication.cpp \
     job.cpp \
-    jobpresenter.cpp
+    jobpresenter.cpp \
+    usbhandler.cpp
 
 RESOURCES += qml.qrc
 
@@ -37,7 +39,17 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     jobrepository.h \
+    jobsdeliverymanager.h \
     obiwanapplication.h \
     job.h \
     jobpresenter.h \
-    sqliteconnection.h
+    routine.h \
+    sqliteconnection.h \
+    usbhandler.h
+
+DISTFILES += \
+    config.ini
+
+INCLUDEPATH += /usr/local/include/libusb-1.0
+
+unix|win32: LIBS += -L/usr/local/lib/ -lusb-1.0

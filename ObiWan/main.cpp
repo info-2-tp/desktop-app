@@ -18,11 +18,7 @@ int main(int argc, char *argv[])
     if (!createConnection(&db)) return 1;
     QSqlTableModel model(&app, db);
     model.setTable("job");
-/*
-    model.setHeaderData(0, Qt::Horizontal, tr("id"));
-    model.setHeaderData(1, Qt::Horizontal, tr("name"));
-    model.setHeaderData(2, Qt::Horizontal, tr("height"));
-*/
+
     cout << "Select: " << model.select() << endl;
 
     cout << "Row count: " << model.rowCount() << endl;
