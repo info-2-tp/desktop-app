@@ -31,9 +31,9 @@ ApplicationWindow {
 
         function parsePriority(value) {
             switch(value) {
-            case 0: return "Normal"
-            case 1: return "Alta"
-            case 2: return "Baja"
+            case 0: return "Baja"
+            case 1: return "Normal"
+            case 2: return "Alta"
             }
             return value
         }

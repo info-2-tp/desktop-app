@@ -8,11 +8,12 @@ using namespace std;
 
 enum State { LOADED, READY, IN_PROGRESS, COMPLETED, CANCELED };
 enum Measure { CM, MM };
-enum Priority { MEDIUM, HIGH, LOW };
+enum Priority { LOW, MEDIUM, HIGH };
 class Job {
 public:
     Job(unsigned long id, string name, unsigned int height, unsigned int quantity, time_t date, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
-        Job(string name, unsigned int height, unsigned int quantity, time_t date, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
+    Job(unsigned long id, string name, unsigned int height, unsigned int quantity, time_t date, unsigned int remaining_quantity, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
+    Job(string name, unsigned int height, unsigned int quantity, time_t date, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
 private:
     unsigned long id;
     string name;

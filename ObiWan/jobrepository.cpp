@@ -33,3 +33,39 @@ bool JobRepository::insert(Job job) {
     query.bindValue(":priority", QVariant(job.getPriority()));
     return query.exec();
 }
+
+QList<Job> JobRepository::findPriorizedWithState(State state) {
+   QSqlQuery query;
+   query.exec("select * from job where state = 1 order by priority desc, date asc");
+   QList<Job> jobs;
+   while (query.next()) {
+       Job job = parseQueryResult(query);
+       jobs.append(job);
+   }
+   return jobs;
+}
+
+Job JobRepository::parseQueryResult(QSqlQuery query) {
+    unsigned long id;
+    string name;
+    unsigned int height, quantity, remaining_quantity;
+    time_t date;
+    Measure measure;
+    State state;
+    Priority priority;
+
+    id = static_cast<unsigned long>(query.value("id").toLongLong());
+    name = query.value("name").toString().toStdString();
+    height = static_cast<unsigned int>(query.value("height").toInt());
+    quantity = static_cast<unsigned int>(query.value("quantity").toInt());
+    date = query.value("date").toDateTime().toTime_t();
+    measure = Measure(query.value("measure").toInt());
+    state = State(query.value("state").toInt());
+    priority = Priority(query.value("priority").toInt());
+    remaining_quantity = static_cast<unsigned int>(query.value("remaining_quantity").toInt());
+
+    Job job = Job(id, name, height, quantity, date, remaining_quantity, measure, state, priority);
+    return job;
+}
+
+

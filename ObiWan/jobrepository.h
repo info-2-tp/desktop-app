@@ -15,9 +15,11 @@ class JobRepository
 public:
     JobRepository();
     Job save(Job job);
+    QList<Job> findPriorizedWithState(State state);
 
 private:
     bool insert(Job job);
+    Job parseQueryResult(QSqlQuery query);
 };
 
 #endif // JOBREPOSITORY_H

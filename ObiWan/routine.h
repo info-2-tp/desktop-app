@@ -12,7 +12,7 @@ typedef struct {
 
 typedef struct {
     uint32_t cant;
-    uint16_t height;
+    uint32_t height;
 } routine_t;
 
 #endif // ROUTINE_H

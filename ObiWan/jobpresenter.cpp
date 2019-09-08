@@ -16,5 +16,6 @@ Job* JobPresenter::createJob(string name,unsigned int quantity,unsigned int size
 routine_t JobPresenter::getRoutine(routine_source_t source) {
     routine_t routine;
     cout << "get routine for " << +source.block_count << " bloques, de " << source.block_height << " milimetros" << endl;
+    repo.findPriorizedWithState(READY);
     return routine;
 }
