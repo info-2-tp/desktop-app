@@ -36,6 +36,7 @@ public:
     unsigned long getId();
     string getName();
     unsigned int getHeight();
+    unsigned int getHeightInMillis();
     Measure getMeasure();
     unsigned int getQuantity();
     State getState();

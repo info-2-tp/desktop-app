@@ -20,7 +20,7 @@ Job JobRepository::save(Job job) {
 
 bool JobRepository::insert(Job job) {
     QSqlQuery query;
-    unsigned long long id = (unsigned long long) job.getId();
+    unsigned long long id = static_cast<unsigned long long>(job.getId());
     query.prepare("insert into job values(:id, :name, :height, :measure, :quantity, :state, :remaining_quantity, :date, :priority)");
     query.bindValue(":id", QVariant(id));
     query.bindValue(":name", QVariant(QString::fromStdString(job.getName())));
@@ -36,7 +36,9 @@ bool JobRepository::insert(Job job) {
 
 QList<Job> JobRepository::findPriorizedWithState(State state) {
    QSqlQuery query;
-   query.exec("select * from job where state = 1 order by priority desc, date asc");
+   query.prepare("select * from job where state = ? order by priority desc, date asc");
+   query.addBindValue(QVariant(state));
+   query.exec();
    QList<Job> jobs;
    while (query.next()) {
        Job job = parseQueryResult(query);

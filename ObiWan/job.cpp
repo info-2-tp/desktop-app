@@ -85,6 +85,10 @@ string Job::getName() {
 unsigned int Job::getHeight() {
     return height;
 }
+
+unsigned int Job::getHeightInMillis() {
+    return measure == CM ? 10*getHeight() : getHeight();
+}
 Measure Job::getMeasure() {
     return measure;
 }
