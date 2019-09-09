@@ -9,7 +9,7 @@ Job JobRepository::save(Job job) {
     query.exec("select id from job order by id desc limit 1");
     query.next();
     unsigned long last_id = query.value(ID).toULongLong(&ok);
-    Job toSaveJob(NEW_ID(last_id), job.getName(), job.getHeight(), job.getQuantity(), job.getDate(),0, 0, job.getMeasure(), job.getState(),
+    Job toSaveJob(NEW_ID(last_id), job.getName(), job.getHeight(), job.getQuantity(), job.getDate(), job.getRemaining_quantity(), job.getReserved(), job.getMeasure(), job.getState(),
                 job.getPriority());
     if (insert(toSaveJob)) {
         return toSaveJob;
