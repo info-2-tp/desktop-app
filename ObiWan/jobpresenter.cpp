@@ -27,7 +27,7 @@ routine_t buildRoutine(routine_source_t source, QList<Job> jobs, routine_source_
         return routine;
     }
 
-    Job newJob = Job(job.getId(), job.getName(), job.getHeight(), job.getQuantity(), job.getDate(), job.getRemaining_quantity() - cuts, job.getMeasure(), IN_PROGRESS, job.getPriority());
+    Job newJob = Job(job.getId(), job.getName(), job.getHeight(), job.getQuantity(), job.getDate(), job.getRemaining_quantity(), cuts, job.getMeasure(), IN_PROGRESS, job.getPriority());
     if (newJob.getRemaining_quantity() == 0) {
         jobs.pop_front();
     }

@@ -12,8 +12,8 @@ ApplicationWindow {
     Material.theme: Material.Dark
 
     TableView {
-        property var columnWidths: [0.04, 0.26, 0.06, 0.06, 0.08, 0.11, 0.1, 0.18, 0.12]
-        property var columnNames: ["Id", "Descripción", "Ancho", "Medida", "Cantidad", "Estado", "Pendientes", "Fecha de entrega", "Prioridad"]
+        property var columnWidths: [0.03, 0.25, 0.05, 0.05, 0.07, 0.1, 0.09, 0.09, 0.17, 0.12]
+        property var columnNames: ["Id", "Descripción", "Ancho", "Medida", "Cantidad", "Estado", "Pendientes", "Reservados", "Fecha de entrega", "Prioridad"]
         function parseMeasure(value) {
             return value ? "mm" : "cm"
         }
@@ -52,11 +52,11 @@ ApplicationWindow {
                 return parseState(value)
             }
 
-            if (column === 7) {
+            if (column === 8) {
                 return parseDate(value)
             }
 
-            if (column === 8) {
+            if (column === 9) {
                 return parsePriority(value)
             }
 
@@ -127,7 +127,7 @@ ApplicationWindow {
                 font.family: "Verdana"
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: {
-                    if (column === 0 || column === 2 || column === 4 || column === 6)
+                    if (column === 0 || column === 2 || column === 4 || column === 6 || column === 7)
                         return Text.AlignRight
                     else
                         return Text.AlignLeft

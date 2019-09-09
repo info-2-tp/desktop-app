@@ -8,7 +8,7 @@
 #include <QCoreApplication>
 static bool createConnection(QSqlDatabase* db)
 {
-    db->setDatabaseName(QCoreApplication::applicationDirPath() + "/obi-wan-sqlite_v0_2.db");
+    db->setDatabaseName(QCoreApplication::applicationDirPath() + "/obi-wan-sqlite_v0_3.db");
     if (!db->open()) {
         QMessageBox::critical(nullptr, QObject::tr("Cannot open database"),
             QObject::tr("Unable to establish a database connection.\n"
@@ -26,7 +26,8 @@ static bool createConnection(QSqlDatabase* db)
                "measure integer,"
                "quantity integer,"
                "state integer,"
-               "remaining_quantity,"
+               "remaining_quantity integer,"
+               "reserved integer,"
                "date integer,"
                "priority integer)");
 

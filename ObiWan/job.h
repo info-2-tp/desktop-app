@@ -11,8 +11,7 @@ enum Measure { CM, MM };
 enum Priority { LOW, MEDIUM, HIGH };
 class Job {
 public:
-    Job(unsigned long id, string name, unsigned int height, unsigned int quantity, time_t date, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
-    Job(unsigned long id, string name, unsigned int height, unsigned int quantity, time_t date, unsigned int remaining_quantity, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
+    Job(unsigned long id, string name, unsigned int height, unsigned int quantity, time_t date, unsigned int remaining_quantity, unsigned int reserved = 0, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
     Job(string name, unsigned int height, unsigned int quantity, time_t date, Measure measure = CM, State state = LOADED, Priority priority = MEDIUM);
 private:
     unsigned long id;
@@ -22,6 +21,7 @@ private:
     unsigned int quantity;
     State state;
     unsigned int remaining_quantity;
+    unsigned int reserved;
     time_t date;
     Priority priority;
 
@@ -41,6 +41,7 @@ public:
     unsigned int getQuantity();
     State getState();
     unsigned int getRemaining_quantity();
+    unsigned int getReserved();
     time_t getDate();
     Priority getPriority();
 };
