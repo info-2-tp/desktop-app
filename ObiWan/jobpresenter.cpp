@@ -2,14 +2,39 @@
 
 #include <iostream>
 
+unsigned int min(unsigned int a, unsigned int b) {
+    return a < b ? a : b;
+}
+
 unsigned int getCuts(routine_source_t source, unsigned int cutSize) {
     return source.block_count*source.block_height/cutSize;
 }
 
+unsigned int routineCants(unsigned int cuts, unsigned int blocks) {
+    return cuts % blocks ? cuts/blocks + 1 : cuts/blocks;
+}
+
 routine_t buildRoutine(routine_source_t source, QList<Job> jobs, routine_source_t *remaining) {
     routine_t routine;
+    if (jobs.isEmpty()) {
+        remaining->block_height = 0;
+        return routine;
+    }
     Job job = jobs.first();
-    unsigned int cuts = getCuts(source, job.getHeightInMillis());
+    unsigned int cuts = min(job.getRemaining_quantity(), getCuts(source, job.getHeightInMillis()));
+    if (cuts == 0) {
+        remaining->block_height = 0;
+        return routine;
+    }
+
+    Job newJob = Job(job.getId(), job.getName(), job.getHeight(), job.getQuantity(), job.getDate(), job.getRemaining_quantity() - cuts, job.getMeasure(), IN_PROGRESS, job.getPriority());
+    if (newJob.getRemaining_quantity() == 0) {
+        jobs.pop_front();
+    }
+    //TODO guardar el job
+    routine.cant = routineCants(cuts, source.block_count);
+    routine.height = job.getHeightInMillis();
+    remaining->block_height-= routine.cant*routine.height;
     return routine;
 }
 
@@ -24,6 +49,8 @@ Job* JobPresenter::createJob(string name,unsigned int quantity,unsigned int size
     return job;
 }
 
+
+//TODO estoy tiene que devolver una lista de rutinas
 routine_t JobPresenter::getRoutine(routine_source_t source) {
     routine_source_t remaining;
     remaining.block_count = source.block_count;
