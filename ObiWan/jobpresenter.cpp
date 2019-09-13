@@ -28,13 +28,14 @@ routine_t buildRoutine(routine_source_t source, QList<Job> jobs, routine_source_
     }
 
     Job newJob = Job(job.getId(), job.getName(), job.getHeight(), job.getQuantity(), job.getDate(), job.getRemaining_quantity(), cuts, job.getMeasure(), IN_PROGRESS, job.getPriority());
-    if (newJob.getRemaining_quantity() == 0) {
+    if (newJob.getReserved() == newJob.getRemaining_quantity()) {
         jobs.pop_front();
     }
     //TODO guardar el job
     routine.cant = routineCants(cuts, source.block_count);
     routine.height = job.getHeightInMillis();
     remaining->block_height-= routine.cant*routine.height;
+    if (remaining->block_height == 0) routine.cant--;
     return routine;
 }
 
