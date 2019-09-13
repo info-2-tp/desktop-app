@@ -14,7 +14,7 @@ unsigned int routineCants(unsigned int cuts, unsigned int blocks) {
     return cuts % blocks ? cuts/blocks + 1 : cuts/blocks;
 }
 
-routine_t buildRoutine(routine_source_t source, QList<Job> jobs, routine_source_t *remaining) {
+routine_t JobPresenter::buildRoutine(routine_source_t source, QList<Job> jobs, routine_source_t *remaining) {
     routine_t routine;
     if (jobs.isEmpty()) {
         remaining->block_height = 0;
@@ -31,7 +31,9 @@ routine_t buildRoutine(routine_source_t source, QList<Job> jobs, routine_source_
     if (newJob.getReserved() == newJob.getRemaining_quantity()) {
         jobs.pop_front();
     }
-    //TODO guardar el job
+
+    repo.save(newJob);
+
     routine.cant = routineCants(cuts, source.block_count);
     routine.height = job.getHeightInMillis();
     remaining->block_height-= routine.cant*routine.height;
@@ -51,8 +53,8 @@ Job* JobPresenter::createJob(string name,unsigned int quantity,unsigned int size
 }
 
 
-//TODO estoy tiene que devolver una lista de rutinas
-routine_t JobPresenter::getRoutine(routine_source_t source) {
+QList<routine_t> JobPresenter::getRoutine(routine_source_t source) {
+    QList<routine_t> routines = QList<routine_t>();
     routine_source_t remaining;
     remaining.block_count = source.block_count;
     remaining.block_height = source.block_height;
@@ -62,6 +64,9 @@ routine_t JobPresenter::getRoutine(routine_source_t source) {
 
     while(remaining.block_height > 0) {
         routine = buildRoutine(remaining, jobs, &remaining);
+        routines.append(routine);
+        cout << "routine: " << +routine.cant << " vueltas de tamaño " << routine.height << " milimetros" << endl;
+
     }
-    return routine;
+    return routines;
 }
