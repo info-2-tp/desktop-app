@@ -93,6 +93,10 @@ unsigned int Job::getRemaining_quantity() {
     return remaining_quantity;
 }
 
+unsigned int Job::getAvailable_quantity() {
+    return remaining_quantity - reserved;
+}
+
 unsigned int Job::getReserved() {
     return reserved;
 }

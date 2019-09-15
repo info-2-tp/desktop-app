@@ -14,6 +14,26 @@ unsigned int routineCants(unsigned int cuts, unsigned int blocks) {
     return cuts % blocks ? cuts/blocks + 1 : cuts/blocks;
 }
 
+void JobPresenter::adjustJobs(uint32_t height, uint32_t remainder, QList<Job> &jobs) {
+    for (int i = 0; i < jobs.length(); i++) {
+        Job job = jobs.at(i);
+        if (job.getHeight() == height && job.getRemaining_quantity() >= remainder) {
+            updateJobWithNewReserved(job, job.getReserved() + remainder, jobs);
+        }
+    }
+}
+
+void JobPresenter::updateJobWithNewReserved(Job &job, uint32_t reserved, QList<Job> &jobs) {
+    Job newJob = Job(job.getId(), job.getName(), job.getHeight(), job.getQuantity(), job.getDate(), job.getRemaining_quantity(), reserved, job.getMeasure(), IN_PROGRESS, job.getPriority());
+    if (newJob.getReserved() == newJob.getRemaining_quantity()) {
+        jobs.pop_front();
+    } else {
+        jobs.replace(jobs.indexOf(job), newJob);
+    }
+
+    repo.update(newJob);
+}
+
 routine_t JobPresenter::buildRoutine(routine_source_t source, QList<Job> &jobs, routine_source_t *remaining) {
     routine_t routine;
     if (jobs.isEmpty()) {
@@ -21,21 +41,21 @@ routine_t JobPresenter::buildRoutine(routine_source_t source, QList<Job> &jobs, 
         return routine;
     }
     Job job = jobs.first();
-    unsigned int cuts = min(job.getRemaining_quantity(), getCuts(source, job.getHeightInMillis()));
+    unsigned int cuts = min(job.getAvailable_quantity(), getCuts(source, job.getHeightInMillis()));
     if (cuts == 0) {
         remaining->block_height = 0;
         return routine;
     }
-
-    Job newJob = Job(job.getId(), job.getName(), job.getHeight(), job.getQuantity(), job.getDate(), job.getRemaining_quantity(), cuts, job.getMeasure(), IN_PROGRESS, job.getPriority());
-    if (newJob.getReserved() == newJob.getRemaining_quantity()) {
-        jobs.pop_front();
-    }
-
-    repo.update(newJob);
+    updateJobWithNewReserved(job, job.getReserved() + cuts, jobs);
 
     routine.cant = routineCants(cuts, source.block_count);
     routine.height = job.getHeightInMillis();
+
+    uint32_t remainder = routine.cant*source.block_count - cuts;
+
+    if (remainder) {
+        adjustJobs(routine.height, remainder, jobs);
+    }
     remaining->block_height-= routine.cant*routine.height;
     if (remaining->block_height == 0) routine.cant--;
     return routine;

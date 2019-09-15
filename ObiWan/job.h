@@ -41,6 +41,7 @@ public:
     unsigned int getQuantity();
     State getState();
     unsigned int getRemaining_quantity();
+    unsigned int getAvailable_quantity();
     unsigned int getReserved();
     time_t getDate();
     Priority getPriority();
