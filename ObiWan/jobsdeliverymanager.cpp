@@ -2,6 +2,14 @@
 
 #include <iostream>
 
+routine_t* buildRoutines(QList<routine_t> routineList) {
+    routine_t* routines = static_cast<routine_t*>(calloc(routineList.length(), sizeof (routine_t)));
+    for (int i = 0; i < routineList.size(); i++) {
+        routines[i] = routineList.at(i);
+    }
+    return routines;
+}
+
 JobsDeliveryManager::JobsDeliveryManager(JobPresenter* jobPresenter)
 {
     this->jobPresenter = jobPresenter;
@@ -28,14 +36,15 @@ void JobsDeliveryManager::newRoutineRequestHeader() {
 void JobsDeliveryManager::newRoutineRequest() {
     QObject::disconnect(this->currentConnection);
     cout << "Bloques: " << +routine_source.block_count << " tamaño: " << routine_source.block_height << endl;
-    this->jobPresenter->getRoutine(routine_source);
-    /*
+    QList<routine_t> routineList = this->jobPresenter->getRoutine(routine_source);
+    routine_t* routines = buildRoutines(routineList);
     message_header_t header;
     header.type = 2;
-    header.size = 4;
+    header.size = sizeof(routine_t)*static_cast<uint16_t>(routineList.length());
     this->usbListener->send(&header, sizeof (header));
+    this->usbListener->send(routines, header.size);
+    free(routines);
     this->waitNewRoutineMessage();
-    */
 }
 
 JobsDeliveryManager::~JobsDeliveryManager() {
