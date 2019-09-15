@@ -27,7 +27,7 @@ static bool createConnection(QSqlDatabase* db)
                "quantity integer,"
                "state integer,"
                "remaining_quantity integer,"
-               "reserved integer,"
+               "reserved_quantity integer,"
                "date integer,"
                "priority integer)");
 

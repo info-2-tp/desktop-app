@@ -20,7 +20,8 @@ Job JobRepository::save(Job job) {
 
 Job JobRepository::update(Job job) {
     QSqlQuery query;
-    query.prepare("update job set id=:id, name=:name, height=:height, measure=:measure, quantity=:quantity, state=:state, remaining_quantity=:remaining_quantity, reserved=:reserved, date=:date, priority=:priority;");
+    unsigned long long id = static_cast<unsigned long long>(job.getId());
+    query.prepare("update job set id = :id, name = :name, height = :height, measure = :measure, quantity = :quantity, state = :state, remaining_quantity = :remaining_quantity, reserved_quantity = :reserved_quantity, date = :date, priority = :priority where id = :id");
     query.bindValue(":id", QVariant(static_cast<unsigned long long>(job.getId())));
     query.bindValue(":name", QVariant(QString::fromStdString(job.getName())));
     query.bindValue(":height", QVariant(job.getHeight()));
@@ -28,7 +29,7 @@ Job JobRepository::update(Job job) {
     query.bindValue(":quantity", QVariant(job.getQuantity()));
     query.bindValue(":state", QVariant(job.getState()));
     query.bindValue(":remaining_quantity", QVariant(job.getRemaining_quantity()));
-    query.bindValue(":reserved", QVariant(job.getReserved()));
+    query.bindValue(":reserved_quantity", QVariant(job.getReserved()));
     query.bindValue(":date", QVariant(QDateTime::fromTime_t(job.getDate())));
     query.bindValue(":priority", QVariant(job.getPriority()));
     query.exec();
@@ -38,7 +39,7 @@ Job JobRepository::update(Job job) {
 bool JobRepository::insert(Job job) {
     QSqlQuery query;
     unsigned long long id = static_cast<unsigned long long>(job.getId());
-    query.prepare("insert into job values(:id, :name, :height, :measure, :quantity, :state, :remaining_quantity, :reserved, :date, :priority)");
+    query.prepare("insert into job values(:id, :name, :height, :measure, :quantity, :state, :remaining_quantity, :reserved_quantity, :date, :priority)");
     query.bindValue(":id", QVariant(id));
     query.bindValue(":name", QVariant(QString::fromStdString(job.getName())));
     query.bindValue(":height", QVariant(job.getHeight()));
@@ -46,7 +47,7 @@ bool JobRepository::insert(Job job) {
     query.bindValue(":quantity", QVariant(job.getQuantity()));
     query.bindValue(":state", QVariant(job.getState()));
     query.bindValue(":remaining_quantity", QVariant(job.getRemaining_quantity()));
-    query.bindValue(":reserved", QVariant(job.getReserved()));
+    query.bindValue(":reserved_quantity", QVariant(job.getReserved()));
     query.bindValue(":date", QVariant(QDateTime::fromTime_t(job.getDate())));
     query.bindValue(":priority", QVariant(job.getPriority()));
     return query.exec();
@@ -83,7 +84,7 @@ Job JobRepository::parseQueryResult(QSqlQuery query) {
     state = State(query.value("state").toInt());
     priority = Priority(query.value("priority").toInt());
     remaining_quantity = static_cast<unsigned int>(query.value("remaining_quantity").toInt());
-    reserved = static_cast<unsigned int>(query.value("reserved").toInt());
+    reserved = static_cast<unsigned int>(query.value("reserved_quantity").toInt());
 
     Job job = Job(id, name, height, quantity, date, remaining_quantity, reserved, measure, state, priority);
     return job;
