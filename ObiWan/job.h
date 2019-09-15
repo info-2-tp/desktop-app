@@ -31,6 +31,8 @@ private:
 
 public:
     friend ostream & operator << (ostream& out, Job& job);
+    bool operator == (Job job);
+    bool isEquals(Job job);
     string toString();
 
     unsigned long getId();

@@ -17,7 +17,7 @@ class JobPresenter {
 private:
     JobManager* manager;
     JobRepository repo;
-    routine_t buildRoutine(routine_source_t source, QList<Job> &jobs, routine_source_t *remaining);
+    bool buildRoutine(routine_source_t source, QList<Job> &jobs, routine_source_t *remaining, routine_t *routine);
     void updateJobWithNewReserved(Job &job, uint32_t reserved, QList<Job> &jobs);
     void adjustJobs(uint32_t height, uint32_t remainder, QList<Job> &jobs);
 public:

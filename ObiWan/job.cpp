@@ -106,3 +106,11 @@ time_t Job::getDate() {
 Priority Job::getPriority() {
     return priority;
 }
+
+bool Job::isEquals(Job job) {
+    return job.getId() == getId();
+}
+
+bool Job::operator==(Job job) {
+    return isEquals(job);
+}

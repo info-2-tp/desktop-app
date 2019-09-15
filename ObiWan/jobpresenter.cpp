@@ -7,7 +7,7 @@ unsigned int min(unsigned int a, unsigned int b) {
 }
 
 unsigned int getCuts(routine_source_t source, unsigned int cutSize) {
-    return source.block_count*source.block_height/cutSize;
+    return source.block_count*(source.block_height/cutSize);
 }
 
 unsigned int routineCants(unsigned int cuts, unsigned int blocks) {
@@ -17,8 +17,9 @@ unsigned int routineCants(unsigned int cuts, unsigned int blocks) {
 void JobPresenter::adjustJobs(uint32_t height, uint32_t remainder, QList<Job> &jobs) {
     for (int i = 0; i < jobs.length(); i++) {
         Job job = jobs.at(i);
-        if (job.getHeight() == height && job.getRemaining_quantity() >= remainder) {
+        if (job.getHeightInMillis() == height && job.getRemaining_quantity() >= remainder) {
             updateJobWithNewReserved(job, job.getReserved() + remainder, jobs);
+            return;
         }
     }
 }
@@ -34,31 +35,29 @@ void JobPresenter::updateJobWithNewReserved(Job &job, uint32_t reserved, QList<J
     repo.update(newJob);
 }
 
-routine_t JobPresenter::buildRoutine(routine_source_t source, QList<Job> &jobs, routine_source_t *remaining) {
-    routine_t routine;
+bool JobPresenter::buildRoutine(routine_source_t source, QList<Job> &jobs, routine_source_t *remaining, routine_t *routine) {
     if (jobs.isEmpty()) {
-        remaining->block_height = 0;
-        return routine;
+        return false;
     }
     Job job = jobs.first();
     unsigned int cuts = min(job.getAvailable_quantity(), getCuts(source, job.getHeightInMillis()));
     if (cuts == 0) {
-        remaining->block_height = 0;
-        return routine;
+        jobs.pop_front();
+        return buildRoutine(source, jobs, remaining, routine);
     }
     updateJobWithNewReserved(job, job.getReserved() + cuts, jobs);
 
-    routine.cant = routineCants(cuts, source.block_count);
-    routine.height = job.getHeightInMillis();
+    routine->cant = routineCants(cuts, source.block_count);
+    routine->height = job.getHeightInMillis();
 
-    uint32_t remainder = routine.cant*source.block_count - cuts;
+    uint32_t remainder = routine->cant*source.block_count - cuts;
 
     if (remainder) {
-        adjustJobs(routine.height, remainder, jobs);
+        adjustJobs(routine->height, remainder, jobs);
     }
-    remaining->block_height-= routine.cant*routine.height;
-    if (remaining->block_height == 0) routine.cant--;
-    return routine;
+    remaining->block_height-= routine->cant*routine->height;
+    if (remaining->block_height == 0) routine->cant--;
+    return true;
 }
 
 JobPresenter::JobPresenter(JobManager& manager) {
@@ -78,15 +77,16 @@ QList<routine_t> JobPresenter::getRoutine(routine_source_t source) {
     routine_source_t remaining;
     remaining.block_count = source.block_count;
     remaining.block_height = source.block_height;
-    routine_t routine;
     cout << "get routine for " << +source.block_count << " bloques, de " << source.block_height << " milimetros" << endl;
     QList<Job> jobs = repo.findPriorizedWithState(READY);
-
-    while(remaining.block_height > 0 && !jobs.isEmpty()) {
-        routine = buildRoutine(remaining, jobs, &remaining);
-        routines.append(routine);
-        cout << "routine: " << +routine.cant << " vueltas de tamaño " << routine.height << " milimetros" << endl;
-
+    bool shouldContinue = true;
+    while(shouldContinue && !jobs.isEmpty()) {
+        routine_t routine;
+        shouldContinue = buildRoutine(remaining, jobs, &remaining, &routine);
+        if (shouldContinue) {
+            routines.append(routine);
+            cout << "routine: " << +routine.cant << " vueltas de tamaño " << routine.height << " milimetros" << endl;
+        }
     }
     manager->refreshJobs();
     return routines;
