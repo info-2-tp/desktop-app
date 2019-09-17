@@ -54,6 +54,7 @@ void JobsDeliveryManager::revertOldRoutines() {
 }
 
 void JobsDeliveryManager::ack() {
+    cout << "Recibiendo ACK" << endl;
     this->jobPresenter->successInProgressJobs();
     this->waitMessageHeader();
 }
