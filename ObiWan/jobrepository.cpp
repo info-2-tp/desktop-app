@@ -36,6 +36,15 @@ Job JobRepository::update(Job job) {
     return job;
 }
 
+void JobRepository::revertInProgress() {
+    QSqlQuery query;
+    query.prepare("update job set state = :ready, reserved_quantity = :reserved_quantity where state = :inProgress");
+    query.bindValue(":ready", QVariant(READY));
+    query.bindValue(":reserved_quantity", QVariant(0));
+    query.bindValue(":inProgress", QVariant(IN_PROGRESS));
+    query.exec();
+}
+
 bool JobRepository::insert(Job job) {
     QSqlQuery query;
     unsigned long long id = static_cast<unsigned long long>(job.getId());

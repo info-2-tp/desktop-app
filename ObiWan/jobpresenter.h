@@ -26,6 +26,7 @@ public:
     Job* createJob(string name, unsigned int quantity, unsigned int size, Measure measure, State state, Priority priority, time_t date);
 
     QList<routine_t> getRoutine(routine_source_t source);
+    void revertOldRoutines();
 
 };
 

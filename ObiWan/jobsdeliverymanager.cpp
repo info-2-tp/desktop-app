@@ -36,6 +36,7 @@ void JobsDeliveryManager::newRoutineRequestHeader() {
 void JobsDeliveryManager::newRoutineRequest() {
     QObject::disconnect(this->currentConnection);
     cout << "Bloques: " << +routine_source.block_count << " tamaño: " << routine_source.block_height << endl;
+    revertOldRoutines();
     QList<routine_t> routineList = this->jobPresenter->getRoutine(routine_source);
     routine_t* routines = buildRoutines(routineList);
     message_header_t header;
@@ -45,6 +46,10 @@ void JobsDeliveryManager::newRoutineRequest() {
     this->usbListener->send(routines, header.size);
     free(routines);
     this->waitNewRoutineMessage();
+}
+
+void JobsDeliveryManager::revertOldRoutines() {
+    this->jobPresenter->revertOldRoutines();
 }
 
 JobsDeliveryManager::~JobsDeliveryManager() {

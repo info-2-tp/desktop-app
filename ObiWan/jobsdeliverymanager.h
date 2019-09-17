@@ -25,6 +25,7 @@ public slots:
 private:
     message_header_t header;
     routine_source_t routine_source;
+    void revertOldRoutines();
 
     JobPresenter* jobPresenter;
     UsbHandler* usbListener;

@@ -71,6 +71,11 @@ Job* JobPresenter::createJob(string name,unsigned int quantity,unsigned int size
     return job;
 }
 
+void JobPresenter::revertOldRoutines() {
+    repo.revertInProgress();
+    manager->refreshJobs();
+}
+
 
 QList<routine_t> JobPresenter::getRoutine(routine_source_t source) {
     QList<routine_t> routines = QList<routine_t>();

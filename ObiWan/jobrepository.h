@@ -17,6 +17,7 @@ public:
     Job save(Job job);
     Job update(Job job);
     QList<Job> findPriorizedWithState(State state);
+    void revertInProgress();
 
 private:
     bool insert(Job job);
