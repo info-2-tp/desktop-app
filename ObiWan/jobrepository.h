@@ -18,10 +18,12 @@ public:
     Job update(Job job);
     QList<Job> findPriorizedWithState(State state);
     void revertInProgress();
+    QList<Job> getInProgressJobs();
 
 private:
     bool insert(Job job);
     Job parseQueryResult(QSqlQuery query);
+    QList<Job> parseQuery(QSqlQuery query);
 };
 
 #endif // JOBREPOSITORY_H

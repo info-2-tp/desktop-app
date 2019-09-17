@@ -27,6 +27,7 @@ public:
 
     QList<routine_t> getRoutine(routine_source_t source);
     void revertOldRoutines();
+    void successInProgressJobs();
 
 };
 

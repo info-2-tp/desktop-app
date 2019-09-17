@@ -67,12 +67,24 @@ QList<Job> JobRepository::findPriorizedWithState(State state) {
    query.prepare("select * from job where state = ? order by priority desc, date asc");
    query.addBindValue(QVariant(state));
    query.exec();
-   QList<Job> jobs;
-   while (query.next()) {
-       Job job = parseQueryResult(query);
-       jobs.append(job);
-   }
-   return jobs;
+   return parseQuery(query);
+}
+
+QList<Job> JobRepository::getInProgressJobs() {
+    QSqlQuery query;
+    query.prepare("select * from job where state = ?");
+    query.addBindValue(QVariant(IN_PROGRESS));
+    query.exec();
+    return parseQuery(query);
+}
+
+QList<Job> JobRepository::parseQuery(QSqlQuery query){
+    QList<Job> jobs;
+    while (query.next()) {
+        Job job = parseQueryResult(query);
+        jobs.append(job);
+    }
+    return jobs;
 }
 
 Job JobRepository::parseQueryResult(QSqlQuery query) {

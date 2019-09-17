@@ -96,3 +96,15 @@ QList<routine_t> JobPresenter::getRoutine(routine_source_t source) {
     manager->refreshJobs();
     return routines;
 }
+
+void JobPresenter::successInProgressJobs() {
+    QList<Job> jobs = repo.getInProgressJobs();
+    while(!jobs.isEmpty()) {
+        Job job = jobs.takeFirst();
+        uint32_t remaining = job.getRemaining_quantity() - job.getReserved();
+        State state = remaining ? READY : COMPLETED;
+        Job newJob = Job(job.getId(), job.getName(), job.getHeight(), job.getQuantity(), job.getDate(), remaining, 0, job.getMeasure(), state, job.getPriority());
+        repo.update(newJob);
+    }
+    manager->refreshJobs();
+}

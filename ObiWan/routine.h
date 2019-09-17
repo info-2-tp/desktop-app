@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 #define ROUTINE_SOURCE_MESSAGE 1
+#define ROUTINE_MESSAGE 2
+#define ACK 3
 
 typedef struct {
     uint16_t block_count;

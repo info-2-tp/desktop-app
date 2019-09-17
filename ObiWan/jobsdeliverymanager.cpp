@@ -14,11 +14,11 @@ JobsDeliveryManager::JobsDeliveryManager(JobPresenter* jobPresenter)
 {
     this->jobPresenter = jobPresenter;
     this->usbListener = new UsbHandler();
-    this->waitNewRoutineMessage();
+    this->waitMessageHeader();
 }
 
-void JobsDeliveryManager::waitNewRoutineMessage() {
-    this->currentConnection = QObject::connect(this->usbListener, SIGNAL(newMessage()), this, SLOT(newRoutineRequestHeader()), Qt::QueuedConnection);
+void JobsDeliveryManager::waitMessageHeader() {
+    this->currentConnection = QObject::connect(this->usbListener, SIGNAL(newMessage()), this, SLOT(newMessageHeader()), Qt::QueuedConnection);
     this->usbListener->listen(&header, sizeof (message_header_t));
 }
 
@@ -27,10 +27,11 @@ void JobsDeliveryManager::waitRoutineSource() {
     this->usbListener->listen(&routine_source, sizeof (routine_source_t));
 }
 
-void JobsDeliveryManager::newRoutineRequestHeader() {
+void JobsDeliveryManager::newMessageHeader() {
     QObject::disconnect(this->currentConnection);
     cout << "Header -> tipo: " << +header.type << " tamaño: " << header.size << endl;
-    this->waitRoutineSource();
+    if (ROUTINE_SOURCE_MESSAGE == header.type) this->waitRoutineSource();
+    if (ACK == header.type) this->ack();
 }
 
 void JobsDeliveryManager::newRoutineRequest() {
@@ -40,16 +41,21 @@ void JobsDeliveryManager::newRoutineRequest() {
     QList<routine_t> routineList = this->jobPresenter->getRoutine(routine_source);
     routine_t* routines = buildRoutines(routineList);
     message_header_t header;
-    header.type = 2;
+    header.type = ROUTINE_MESSAGE;
     header.size = sizeof(routine_t)*static_cast<uint16_t>(routineList.length());
     this->usbListener->send(&header, sizeof (header));
     this->usbListener->send(routines, header.size);
     free(routines);
-    this->waitNewRoutineMessage();
+    this->waitMessageHeader();
 }
 
 void JobsDeliveryManager::revertOldRoutines() {
     this->jobPresenter->revertOldRoutines();
+}
+
+void JobsDeliveryManager::ack() {
+    this->jobPresenter->successInProgressJobs();
+    this->waitMessageHeader();
 }
 
 JobsDeliveryManager::~JobsDeliveryManager() {
