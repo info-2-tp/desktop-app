@@ -130,7 +130,7 @@ Dialog {
         ComboBox {
             id: behavior_priority
             width: 140
-            model: ["Media", "Alta", "Baja"]
+            model: ["Baja", "Media", "Alta"]
         }
 
     }

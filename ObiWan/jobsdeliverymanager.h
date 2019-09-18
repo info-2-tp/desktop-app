@@ -20,18 +20,20 @@ public:
     ~JobsDeliveryManager();
 
 public slots:
-        void newRoutineRequestHeader();
+        void newMessageHeader();
         void newRoutineRequest();
 private:
     message_header_t header;
     routine_source_t routine_source;
+    void revertOldRoutines();
+    void ack();
 
     JobPresenter* jobPresenter;
     UsbHandler* usbListener;
 
     QMetaObject::Connection currentConnection;
 
-    void waitNewRoutineMessage();
+    void waitMessageHeader();
     void waitRoutineSource();
 
 };
