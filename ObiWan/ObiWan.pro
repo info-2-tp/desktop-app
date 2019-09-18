@@ -49,7 +49,3 @@ HEADERS += \
 
 DISTFILES += \
     config.ini
-
-INCLUDEPATH += /usr/local/include/libusb-1.0
-
-unix|win32: LIBS += -L/usr/local/lib/ -lusb-1.0
