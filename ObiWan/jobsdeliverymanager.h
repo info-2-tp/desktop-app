@@ -27,6 +27,7 @@ private:
     routine_source_t routine_source;
     void revertOldRoutines();
     void ack();
+    void pong();
 
     JobPresenter* jobPresenter;
     UsbHandler* usbListener;

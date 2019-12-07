@@ -32,6 +32,7 @@ void JobsDeliveryManager::newMessageHeader() {
     cout << "Header -> tipo: " << +header.type << " tamaño: " << header.size << endl;
     if (ROUTINE_SOURCE_MESSAGE == header.type) this->waitRoutineSource();
     if (ACK == header.type) this->ack();
+    if (PING == header.type) this->pong();
 }
 
 void JobsDeliveryManager::newRoutineRequest() {
@@ -56,6 +57,15 @@ void JobsDeliveryManager::revertOldRoutines() {
 void JobsDeliveryManager::ack() {
     cout << "Recibiendo ACK" << endl;
     this->jobPresenter->successInProgressJobs();
+    this->waitMessageHeader();
+}
+
+void JobsDeliveryManager::pong() {
+    cout << "Recibiendo PING" << endl;
+    message_header_t header;
+    header.type = PONG;
+    header.size = 0;
+    this->usbListener->send(&header, sizeof (header));
     this->waitMessageHeader();
 }
 
