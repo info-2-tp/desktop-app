@@ -10,6 +10,9 @@ using namespace std;
 class JobManager {
 public:
     virtual void refreshJobs();
+    virtual void r2d2IsCutting(unsigned int cube_size);
+    virtual void newCut(uint16_t cut_size);
+    virtual void ack();
     virtual ~JobManager();
 };
 
@@ -28,6 +31,8 @@ public:
     QList<routine_t> getRoutine(routine_source_t source);
     void revertOldRoutines();
     void successInProgressJobs();
+    void r2d2Working(unsigned int cube_size);
+    void cut(uint16_t cut_size);
 
 };
 

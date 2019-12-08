@@ -14,6 +14,14 @@ unsigned int routineCants(unsigned int cuts, unsigned int blocks) {
     return cuts % blocks ? cuts/blocks + 1 : cuts/blocks;
 }
 
+void JobPresenter::r2d2Working(unsigned int cube_size) {
+    this->manager->r2d2IsCutting(cube_size);
+}
+
+void JobPresenter::cut(uint16_t cut_size) {
+    this->manager->newCut(cut_size);
+}
+
 void JobPresenter::adjustJobs(uint32_t height, uint32_t remainder, QList<Job> &jobs) {
     for (int i = 0; i < jobs.length(); i++) {
         Job job = jobs.at(i);
@@ -107,4 +115,5 @@ void JobPresenter::successInProgressJobs() {
         repo.update(newJob);
     }
     manager->refreshJobs();
+    manager->ack();
 }

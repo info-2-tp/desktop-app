@@ -5,5 +5,6 @@
         <file>NewJobDialog.qml</file>
         <file>ObiCalendar.qml</file>
         <file>config.ini</file>
+        <file>R2d2.qml</file>
     </qresource>
 </RCC>

@@ -22,12 +22,15 @@ public:
 public slots:
         void newMessageHeader();
         void newRoutineRequest();
+        void newCut();
 private:
     message_header_t header;
     routine_source_t routine_source;
+    uint16_t cut_size;
     void revertOldRoutines();
     void ack();
     void pong();
+    void cut();
 
     JobPresenter* jobPresenter;
     UsbHandler* usbListener;
@@ -36,6 +39,7 @@ private:
 
     void waitMessageHeader();
     void waitRoutineSource();
+    void waitCut();
 
 };
 

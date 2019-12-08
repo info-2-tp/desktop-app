@@ -8,6 +8,7 @@
 #define ACK 3
 #define PING 4
 #define PONG 5
+#define CUT_MESSAGE 6
 
 typedef struct {
     uint16_t block_count;

@@ -4,12 +4,61 @@ import QtQuick.Window 2.2
 import QtQuick.Controls.Material 2.3
 
 ApplicationWindow {
+    property var r2d2
     id: mainWindow
     visible: true
     width: 980
     height: 620
     title: qsTr("Obi Wan Kenobi")
     Material.theme: Material.Dark
+
+    function prepareCube(cubeSize) {
+        if (mainWindow.r2d2) mainWindow.r2d2.destroy();
+        mainWindow.r2d2 = Qt.createQmlObject('R2d2 {
+        id: r2d2
+        anchors.centerIn: parent
+        title: "R2D2"
+        modal: true
+        closePolicy: "CloseOnEscape"
+        }', mainWindow, 'lastObject');
+        mainWindow.r2d2.open();
+        mainWindow.r2d2.cube_size = cubeSize;
+    }
+
+    function showNewCut(cutSize) {
+        mainWindow.r2d2.newCut(cutSize);
+    }
+
+    function ack() {
+        mainWindow.r2d2.ack();
+        setTimeout(destroyR2d2, 3000);
+    }
+
+    function destroyR2d2() {
+        mainWindow.r2d2.destroy();
+        mainWindow.r2d2 = null;
+    }
+
+    Connections {
+        target: app
+        onNewCubePrepare: {
+            prepareCube(cubeSize)
+        }
+    }
+
+    Connections {
+        target: app
+        onNewCut: {
+            showNewCut(cutSize)
+        }
+    }
+
+    Connections {
+        target: app
+        onNewAck: {
+            ack()
+        }
+    }
 
     TableView {
         property var columnWidths: [0.03, 0.25, 0.05, 0.05, 0.07, 0.1, 0.09, 0.09, 0.17, 0.12]
@@ -147,7 +196,10 @@ ApplicationWindow {
         anchors.right: parent.right
         anchors.rightMargin: 16
         Material.accent: Material.Orange
-        onClicked: new_job_dialog.open()
+        onClicked: {
+            new_job_dialog.open()
+            console.log("Boton precionado")
+        }
 
     }
 
@@ -162,4 +214,25 @@ ApplicationWindow {
         }
     }
 
+    Timer {
+        id: timer
+        running: false
+        repeat: false
+
+        property var callback
+
+        onTriggered: callback()
+    }
+
+    function setTimeout(callback, delay)
+    {
+        if (timer.running) {
+            console.error("nested calls to setTimeout are not supported!");
+            return;
+        }
+        timer.callback = callback;
+        // note: an interval of 0 is directly triggered, so add a little padding
+        timer.interval = delay + 1;
+        timer.running = true;
+    }
 }

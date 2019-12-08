@@ -27,17 +27,24 @@ void JobsDeliveryManager::waitRoutineSource() {
     this->usbListener->listen(&routine_source, sizeof (routine_source_t));
 }
 
+void JobsDeliveryManager::waitCut() {
+    this->currentConnection = QObject::connect(this->usbListener, SIGNAL(newMessage()), this, SLOT(newCut()), Qt::QueuedConnection);
+    this->usbListener->listen(&cut_size, sizeof (cut_size));
+}
+
 void JobsDeliveryManager::newMessageHeader() {
     QObject::disconnect(this->currentConnection);
     cout << "Header -> tipo: " << +header.type << " tamaño: " << header.size << endl;
     if (ROUTINE_SOURCE_MESSAGE == header.type) this->waitRoutineSource();
     if (ACK == header.type) this->ack();
     if (PING == header.type) this->pong();
+    if (CUT_MESSAGE == header.type) this->waitCut();
 }
 
 void JobsDeliveryManager::newRoutineRequest() {
     QObject::disconnect(this->currentConnection);
     cout << "Bloques: " << +routine_source.block_count << " tamaño: " << routine_source.block_height << endl;
+    this->jobPresenter->r2d2Working(routine_source.block_height);
     revertOldRoutines();
     QList<routine_t> routineList = this->jobPresenter->getRoutine(routine_source);
     routine_t* routines = buildRoutines(routineList);
@@ -47,6 +54,12 @@ void JobsDeliveryManager::newRoutineRequest() {
     this->usbListener->send(&header, sizeof (header));
     this->usbListener->send(routines, header.size);
     free(routines);
+    this->waitMessageHeader();
+}
+
+void JobsDeliveryManager::newCut() {
+    QObject::disconnect(this->currentConnection);
+    this->jobPresenter->cut(cut_size);
     this->waitMessageHeader();
 }
 
